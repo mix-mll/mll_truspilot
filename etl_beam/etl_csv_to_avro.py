@@ -1,4 +1,5 @@
 import argparse
+import json
 import logging
 
 import apache_beam as beam
@@ -10,23 +11,11 @@ from transforms import WriteToAvro, dag_row_to_dict
 
 class SCHEMA_UTIL:
     def __init__(self, schema_path):
-        self.SCHEMA = {
-            "namespace": "reviews.avro",
-            "name": "reviews_01",
-            "type": "record",
-            "fields": [
-                {"name": "ReviewerName", "type": "string"},
-                {"name": "ReviewTitle", "type": "string"},
-                {"name": "ReviewRating", "type": "int"},
-                {"name": "ReviewContent", "type": "string"},
-                {"name": "EmailAddress", "type": "string"},
-                {"name": "Country", "type": "string"},
-                {"name": "ReviewDate", "type": "string"},
-            ],
-        }
+        with open(schema_path, "r") as f:
+            schema = json.load(f)
 
-        self.HEADERS_TYPE = {f["name"]: f["type"] for f in self.SCHEMA["fields"]}
-        self.AVRO_SCHEMA = fastavro.schema.parse_schema(self.SCHEMA)
+        self.HEADERS_TYPE = {f["name"]: f["type"] for f in schema["fields"]}
+        self.AVRO_SCHEMA = fastavro.schema.parse_schema(schema)
 
 
 def run(schema_path, input_path, input_file, destination, pipeline_args=None):
@@ -41,7 +30,6 @@ def run(schema_path, input_path, input_file, destination, pipeline_args=None):
 
     dict_coll = dag_row_to_dict(input_coll, schema_util.HEADERS_TYPE)
     dict_coll | "write-avro2" >> beam.ParDo(WriteToAvro(schema_util.AVRO_SCHEMA, destination, input_file))
-    dict_coll | "print2" >> beam.Map(print)
 
     result = pipeline.run()
 
