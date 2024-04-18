@@ -56,7 +56,7 @@ Some resources were created direcly in the GCP outside this repe:
 ## Requirements
 gcloud skd
 
-# One time load
+## One time load
 ```
     source load_to_bq/variables.sh
     make print_variables
