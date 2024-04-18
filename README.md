@@ -31,3 +31,16 @@ To have a formated and code with the guidelines use:
 ```
     make lint
 ```
+
+## Running:
+using the default parameters
+```
+    python etl_beam/etl_csv_to_avro.py
+```
+
+```
+    python etl_beam/etl_csv_to_avro.py \
+        --schema_path OTHER \
+        --input_file OTHER \
+        --destination OTHER
+```
