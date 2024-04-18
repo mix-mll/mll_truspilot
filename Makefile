@@ -24,6 +24,6 @@ test:
 
 coverage:
 	coverage run -m pytest
-	coverage report -m
+	coverage report -m > coverage_report.txt
 	coverage html
 	open htmlcov/index.html

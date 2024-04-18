@@ -1,0 +1,6 @@
+Name                          Stmts   Miss  Cover   Missing
+-----------------------------------------------------------
+etl_beam/test_transforms.py      51      0   100%
+etl_beam/transforms.py           39      1    97%   23
+-----------------------------------------------------------
+TOTAL                            90      1    99%
