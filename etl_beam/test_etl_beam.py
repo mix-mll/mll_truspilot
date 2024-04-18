@@ -2,7 +2,7 @@ import apache_beam as beam
 import fastavro
 from apache_beam.testing.test_pipeline import TestPipeline
 from apache_beam.testing.util import assert_that, equal_to
-from transforms import RowToDict, dag_row_to_dict
+from transforms import RowToDict, WriteToAvro, dag_row_to_dict
 
 SCHEMA = {
     "namespace": "orders.avro",
@@ -16,6 +16,7 @@ SCHEMA = {
 
 HEADERS_TYPE = {f["name"]: f["type"] for f in SCHEMA["fields"]}
 PARSED_SCHEMA = fastavro.schema.parse_schema(SCHEMA)
+DESTINATION = "test_files"
 
 
 class TestRowToDict:
@@ -55,3 +56,11 @@ class TestRowToDict:
             input_coll = pipeline | beam.Create([self.INPUT_DATA])
             actual_output = dag_row_to_dict(input_coll, HEADERS_TYPE)
             assert_that(actual_output, equal_to(self.OUTPUT_GRUPED))
+
+
+class TestWriteToAvro:
+    FILENAME = "unit_test_writeavro"
+    write_to_avro = WriteToAvro(SCHEMA, DESTINATION, f"{FILENAME}.csv")
+
+    def test_get_filename(self):
+        assert "path01/file02.avro" == self.write_to_avro.get_filename("path01", "file02.csv")
