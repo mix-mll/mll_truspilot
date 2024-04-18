@@ -24,3 +24,5 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+
+test_files/*.avro
