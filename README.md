@@ -1,4 +1,4 @@
-# mll_truspilot
+# mll_truspilot code challenge
 
 # Ingestion
 The ingestion could be done pretty simply, but to demostrate my experience with Apache Beam
@@ -43,4 +43,22 @@ using the default parameters
         --schema_path OTHER \
         --input_file OTHER \
         --destination OTHER
+```
+
+
+# INGEST DATA: Datawerehouse BigQuery
+
+## Resouces
+Some resources were created direcly in the GCP outside this repe:
+* project_id
+* dataset
+
+## Requirements
+gcloud skd
+
+# One time load
+```
+    source load_to_bq/variables.sh
+    make print_variables
+    make bq_load
 ```
