@@ -10,8 +10,6 @@ clean: clean-pyc
 	rm -rf .pytest_cache
 	rm -rf *.egg-info
 
-install:
-	pip install .
 
 install:
 	python -m pip install --upgrade pip
