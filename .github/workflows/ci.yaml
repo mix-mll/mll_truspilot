@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    # - uses: google-github-actions/auth@v2
+    #   with:
+    #     credentials_json: ${{ secrets.CICD__DEV_DE_MA_RIO_2024__DATA_ENG }}
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        make install
+
+    - name: Pytest
+      run: |
+        make test
+
+    - name: Run pre-commit hooks
+      run: |
+        make lint

@@ -1,0 +1,4 @@
+apache-beam==2.55.1
+fastavro==1.9.4
+pre-commit==3.2.0
+pytest==8.0.2

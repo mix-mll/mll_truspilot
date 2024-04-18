@@ -1,4 +1,5 @@
-Reviewer Name;Review Title;Review Rating;Review Content;Email Address;Country;Review Date;John Doe;Excellent Service;5;I recently used this service and I must say I was extremely satisfied. The customer service was excellent, and the product exceeded my expectations. ✔👍;johndoe@example.com;USA;2024-02-23
+Reviewer Name;Review Title;Review Rating;Review Content;Email Address;Country;Review Date
+John Doe;Excellent Service;5;I recently used this service and I must say I was extremely satisfied. The customer service was excellent, and the product exceeded my expectations. ✔👍;johndoe@example.com;USA;2024-02-23
 Jane Smith;Great Experience;4;Overall, I had a great experience with this company. The product arrived on time and was exactly as described. The only downside was the packaging was a bit damaged. 😔;janesmith@example.com;UK;2024-02-23
 Emily Johnson;Good Service;3;The service was good, but there were a few hiccups along the way. The product took longer to arrive than expected, and there was a small issue with the quality.;invalid_email_example.com;Canada;2024-02-23
 Michael Brown;Disappointing Experience;2;I was really looking forward to using this service, but unfortunately, it was a disappointment. The product was not as described, and customer service was unresponsive. 🙁;michael.brown@example.com;Australia;2024-02-23
