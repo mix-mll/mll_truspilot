@@ -1,0 +1,14 @@
+{
+    "namespace": "reviews.avro",
+    "name": "reviews_01",
+    "type": "record",
+    "fields": [
+        {"name": "ReviewerName", "type": "string"},
+        {"name": "ReviewTitle", "type": "string"},
+        {"name": "ReviewRating", "type": "int"},
+        {"name": "ReviewContent", "type": "string"},
+        {"name": "EmailAddress", "type": "string"},
+        {"name": "Country", "type": "string"},
+        {"name": "ReviewDate", "type": "string"}
+    ]
+}
