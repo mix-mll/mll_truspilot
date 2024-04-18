@@ -14,3 +14,20 @@ The CSV sample file is in the directory sample_data_01.csv
 ## Apache Beam Code
 The Apache Beam code is in etl_beam, it has 3 files, transforms.py and test_transforms.py have the basic code
 the etl_beam.py has the code with parameters for the input and output file path.
+
+## INSTALL
+```
+    make install
+```
+
+## Testing
+unit test has been writen and added in github workflows, best to run a coverage and aim to high test coverage
+```
+    make coverage
+```
+
+## Lint and formating
+To have a formated and code with the guidelines use:
+```
+    make lint
+```
