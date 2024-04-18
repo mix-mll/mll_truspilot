@@ -16,7 +16,7 @@ SCHEMA = {
 
 HEADERS_TYPE = {f["name"]: f["type"] for f in SCHEMA["fields"]}
 PARSED_SCHEMA = fastavro.schema.parse_schema(SCHEMA)
-DESTINATION = "test_files"
+DESTINATION = "./test_files"
 
 INPUT_DATA = [
     "name;id",
@@ -60,7 +60,13 @@ class TestRowToDict:
 
 class TestWriteToAvro:
     FILENAME = "unit_test_writeavro"
-    write_to_avro = WriteToAvro(SCHEMA, DESTINATION, f"{FILENAME}.csv")
+    CSV_FILENAME = f"{FILENAME}.csv"
 
     def test_get_filename(self):
-        assert "path01/file02.avro" == self.write_to_avro.get_filename("path01", "file02.csv")
+        write_to_avro = WriteToAvro(SCHEMA, DESTINATION, self.CSV_FILENAME)
+        assert "path01/file02.avro" == write_to_avro.get_filename("path01", "file02.csv")
+
+    def test_WriteToAvro(self):
+        with TestPipeline() as pipeline:
+            input_coll = pipeline | "Create elements" >> beam.Create(OUTPUT_GRUPED)
+            input_coll | "write-avro" >> beam.ParDo(WriteToAvro(SCHEMA, DESTINATION, self.CSV_FILENAME))
