@@ -18,21 +18,21 @@ HEADERS_TYPE = {f["name"]: f["type"] for f in SCHEMA["fields"]}
 PARSED_SCHEMA = fastavro.schema.parse_schema(SCHEMA)
 DESTINATION = "test_files"
 
+INPUT_DATA = [
+    "name;id",
+    "a;1",
+    "b;2",
+]
+
+OUTPUT_DICT = [
+    {"name": "a", "id": 1},
+    {"name": "b", "id": 2},
+]
+
+OUTPUT_GRUPED = [(1, OUTPUT_DICT)]
+
 
 class TestRowToDict:
-    INPUT_DATA = [
-        "name;id",
-        "a;1",
-        "b;2",
-    ]
-
-    OUTPUT_DICT = [
-        {"name": "a", "id": 1},
-        {"name": "b", "id": 2},
-    ]
-
-    OUTPUT_GRUPED = [(1, OUTPUT_DICT)]
-
     def test_tuple_str_to_dict(self):
         # defaul separtor
         row_to_dict = RowToDict(HEADERS_TYPE)
@@ -47,15 +47,15 @@ class TestRowToDict:
 
     def test_RowToDict(self):
         with TestPipeline() as pipeline:
-            input_coll = pipeline | beam.Create([self.INPUT_DATA])
+            input_coll = pipeline | beam.Create([INPUT_DATA])
             actual_output = input_coll | beam.ParDo(RowToDict(HEADERS_TYPE))
-            assert_that(actual_output, equal_to(self.OUTPUT_DICT))
+            assert_that(actual_output, equal_to(OUTPUT_DICT))
 
     def test_dag_row_to_dict(self):
         with TestPipeline() as pipeline:
-            input_coll = pipeline | beam.Create([self.INPUT_DATA])
+            input_coll = pipeline | beam.Create([INPUT_DATA])
             actual_output = dag_row_to_dict(input_coll, HEADERS_TYPE)
-            assert_that(actual_output, equal_to(self.OUTPUT_GRUPED))
+            assert_that(actual_output, equal_to(OUTPUT_GRUPED))
 
 
 class TestWriteToAvro:
