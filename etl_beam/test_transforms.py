@@ -1,7 +1,10 @@
+import os
+
 import apache_beam as beam
 import fastavro
 from apache_beam.testing.test_pipeline import TestPipeline
 from apache_beam.testing.util import assert_that, equal_to
+from fastavro import reader
 from transforms import RowToDict, WriteToAvro, dag_row_to_dict
 
 SCHEMA = {
@@ -16,7 +19,6 @@ SCHEMA = {
 
 HEADERS_TYPE = {f["name"]: f["type"] for f in SCHEMA["fields"]}
 PARSED_SCHEMA = fastavro.schema.parse_schema(SCHEMA)
-DESTINATION = "./test_files"
 
 INPUT_DATA = [
     "name;id",
@@ -60,13 +62,29 @@ class TestRowToDict:
 
 class TestWriteToAvro:
     FILENAME = "unit_test_writeavro"
+    DESTINATION = "./test_files"
     CSV_FILENAME = f"{FILENAME}.csv"
+    AVRO_FULL_FILENAME = f"{DESTINATION}/{FILENAME}.avro"
 
     def test_get_filename(self):
-        write_to_avro = WriteToAvro(SCHEMA, DESTINATION, self.CSV_FILENAME)
+        write_to_avro = WriteToAvro(SCHEMA, self.DESTINATION, self.CSV_FILENAME)
         assert "path01/file02.avro" == write_to_avro.get_filename("path01", "file02.csv")
 
+    def delete_file(self):
+        if os.path.exists(self.AVRO_FULL_FILENAME):
+            os.remove(self.AVRO_FULL_FILENAME)
+
+    def read_avro(self):
+        with open(self.AVRO_FULL_FILENAME, "rb") as fo:
+            return [r for r in reader(fo)]
+
     def test_WriteToAvro(self):
+        self.delete_file()
+
         with TestPipeline() as pipeline:
             input_coll = pipeline | "Create elements" >> beam.Create(OUTPUT_GRUPED)
-            input_coll | "write-avro" >> beam.ParDo(WriteToAvro(SCHEMA, DESTINATION, self.CSV_FILENAME))
+            input_coll | "write-avro" >> beam.ParDo(WriteToAvro(SCHEMA, self.DESTINATION, self.CSV_FILENAME))
+
+        assert self.read_avro() == OUTPUT_DICT
+
+        self.delete_file()
