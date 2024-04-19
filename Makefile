@@ -27,3 +27,11 @@ coverage:
 	coverage report -m > coverage_report.txt
 	coverage html
 	open htmlcov/index.html
+
+# LOAD to BigQuery
+print_variables:
+	echo GCP_PROJECT_ID:${GCP_PROJECT_ID}
+	echo BQ_DATASET:${BQ_DATASET}
+
+bq_load:
+	bq load --source_format="AVRO" --autodetect --replace ${GCP_PROJECT_ID}:${BQ_DATASET}.reviews_01 avro_files/reviews_01.avro
